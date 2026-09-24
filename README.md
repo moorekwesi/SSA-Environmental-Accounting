@@ -1,6 +1,6 @@
 # SSA Sustainability Observatory
 
-Data, code and an interactive dashboard for the study **"Paving an Extractive Path? Infrastructure, Human Capital and Environmental Pressure in Sub-Saharan Africa"** (Moore, Adams, Maisuh & Tackie).
+Data, code and an interactive dashboard for the study **"Paving an Extractive Path? Infrastructure, Human Capital and Environmental Pressure in Sub-Saharan Africa"** (Adams, Maisuh, Tackie & Moore).
 
 - **Live dashboard:** https://ssa-ea.vercel.app
 - **Repository:** https://github.com/moorekwesi/SSA-Environmental-Accounting
@@ -71,7 +71,7 @@ GitHub Pages works as an alternative: in **Settings → Pages**, deploy from bra
 
 ## Citation
 
-Moore, S. E., Adams, J., Maisuh, A., & Tackie, G. (2026). *Paving an extractive path? Infrastructure, human capital and environmental pressure in Sub-Saharan Africa.* University of Cape Coast.
+Adams, J., Maisuh, A., Tackie, G., & Moore, S. E. (2026). *Paving an extractive path? Infrastructure, human capital and environmental pressure in Sub-Saharan Africa.* University of Cape Coast.
 
 Supported by a Group-led Research Support Grant from the Directorate of Research, Innovation and Consultancy (DRIC), University of Cape Coast.
 
