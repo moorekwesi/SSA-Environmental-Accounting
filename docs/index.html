@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SSA Sustainability Observatory</title>
+<meta name="description" content="Infrastructure, human capital and environmental sustainability in 49 Sub-Saharan African countries, 1960–2024: data explorer, model results and policy simulator.">
+<link rel="stylesheet" href="assets/style.css">
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js" defer></script>
+<script src="assets/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <div>
+      <div class="brand-title">SSA Sustainability Observatory</div>
+      <div class="brand-sub">Infrastructure, human capital &amp; the environment · 49 countries · 1960–2024</div>
+    </div>
+  </div>
+  <button id="themeToggle" class="ghost" type="button" aria-label="Toggle dark mode">◐ Theme</button>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <button role="tab" data-tab="overview" aria-selected="true">Overview</button>
+  <button role="tab" data-tab="explore">Explore data</button>
+  <button role="tab" data-tab="coverage">Coverage</button>
+  <button role="tab" data-tab="results">Model results</button>
+  <button role="tab" data-tab="robust">Robustness</button>
+  <button role="tab" data-tab="simulate">Scenario simulator</button>
+  <button role="tab" data-tab="quality">Data quality</button>
+  <button role="tab" data-tab="methods">Methods &amp; downloads</button>
+</nav>
+
+<main id="main">
+
+<!-- OVERVIEW -->
+<section class="panel" id="tab-overview" role="tabpanel">
+  <div class="hero">
+    <h1>Paving an extractive path?</h1>
+    <p class="lede">Do infrastructure and human capital work together for environmental sustainability in Sub-Saharan Africa? This observatory publishes the panel data, the econometric estimates and a scenario simulator behind the study, so every number can be inspected and reused.</p>
+  </div>
+  <div class="tiles" id="tiles"></div>
+  <div class="alert info" id="hcrAlert" role="note">
+    <strong>Indices rebuilt (September 2026).</strong> INFRA and HCR are now constructed from public sources: WDI and ITU for infrastructure; UNDP HDR and UNESCO UIS for human capital. They cover 1990 onwards. The workbook's original indices failed plausibility checks and are kept for comparison only. <a href="#quality" data-goto="quality">See how the indices were built →</a>
+  </div>
+  <h2>Key findings</h2>
+  <div class="cards">
+    <article class="card">
+      <div class="card-kicker">Robust</div>
+      <h3>Infrastructure tracks cropland expansion</h3>
+      <p>A one-standard-deviation rise in the infrastructure index is associated with <strong id="kf1">+1.2</strong> percentage points of land under arable use. The link holds in every fixed-effects specification, when any single country is dropped and at lags of one to three years.</p>
+    </article>
+    <article class="card">
+      <div class="card-kicker warn">Sample-sensitive</div>
+      <h3>Rents and emissions: weaker, specification-dependent links</h3>
+      <p>Resource rents rise by about <strong id="kf2">8–10%</strong> per SD of infrastructure, with p between 0.05 and 0.13. Emissions rise with infrastructure only in the broad-control sample.</p>
+    </article>
+    <article class="card">
+      <div class="card-kicker muted">Weak evidence</div>
+      <h3>Human capital may temper the rents link</h3>
+      <p>The INFRA × HCR interaction is negative for resource rents (p = 0.02 with broad controls, 0.09 with full controls), which is the pressure-reducing direction. It does not survive every leave-one-country-out check, and there is no such synergy for emissions.</p>
+    </article>
+  </div>
+  <h2>Hypotheses</h2>
+  <div class="table-wrap"><table class="data" id="hypTable">
+    <thead><tr><th>Hypothesis</th><th>Status</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td>H1 · Infrastructure improves sustainability (reduces pressure)</td><td><span class="badge bad">Not supported</span></td><td>Infrastructure is associated with more pressure: more arable land (robust), higher resource rents (borderline) and higher emissions (broad samples only).</td></tr>
+      <tr><td>H2 · Human capital strengthens that effect</td><td><span class="badge warn">Weak, partial</span></td><td>A pressure-reducing interaction for resource rents that is sensitive to sample and to which countries are included. None for emissions or land in the fixed-effects models.</td></tr>
+      <tr><td>H3 · Institutional quality moderates the effects</td><td><span class="badge neutral">Pending</span></td><td>WGI-based INST index not yet merged.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- EXPLORE -->
+<section class="panel" id="tab-explore" role="tabpanel" hidden>
+  <div class="filters">
+    <label>Variable <select id="exVar"></select></label>
+    <label>Year <input type="range" id="exYear" min="1960" max="2024" step="1"><output id="exYearOut"></output></label>
+    <label class="check"><input type="checkbox" id="exLog"> Log colour scale</label>
+  </div>
+  <div class="grid-2">
+    <div class="chart-card">
+      <h3 id="mapTitle">Map</h3>
+      <div id="map" class="chart tall" role="img" aria-label="Choropleth map of the selected variable"></div>
+      <p class="chart-note">Grey countries have no observation for the selected year. The colour scale is fixed across years and capped at the 98th percentile. Click a country to add it to the comparison.</p>
+    </div>
+    <div class="chart-card">
+      <h3>Variable definition</h3>
+      <div id="metaCard" class="meta"></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="card-head">
+      <h3 id="tsTitle">Over time</h3>
+      <label>Compare countries (up to 5) <select id="exCountries" multiple size="1"></select></label>
+    </div>
+    <div class="chips" id="countryChips"></div>
+    <div id="ts" class="chart" role="img" aria-label="Time series for selected countries"></div>
+  </div>
+</section>
+
+<!-- COVERAGE -->
+<section class="panel" id="tab-coverage" role="tabpanel" hidden>
+  <p class="lede small">The panel is unbalanced. Emissions (THE) and energy mix are observed mostly after 2000, which shrinks any model that uses them. Coverage matters for how much weight each result can bear.</p>
+  <div class="chart-card">
+    <h3>Share of years observed, by country and variable</h3>
+    <div id="heat" class="chart xtall" role="img" aria-label="Heatmap of data coverage"></div>
+  </div>
+  <div class="chart-card">
+    <div class="card-head">
+      <h3>Countries reporting, by year</h3>
+      <label>Variable <select id="covVar"></select></label>
+    </div>
+    <div id="covYear" class="chart" role="img" aria-label="Countries reporting per year"></div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="panel" id="tab-results" role="tabpanel" hidden>
+  <div class="filters">
+    <label>Outcome <select id="rsOutcome"></select></label>
+    <label>Specification <select id="rsSpec"></select></label>
+  </div>
+  <div class="grid-2">
+    <div class="chart-card">
+      <h3 id="forestTitle">Coefficients</h3>
+      <div id="forest" class="chart tall" role="img" aria-label="Coefficient plot"></div>
+      <p class="chart-note">Points are coefficients on standardised predictors with 95% intervals. Filled markers: <em>p</em> &lt; 0.05. Hollow: not significant.</p>
+    </div>
+    <div class="chart-card">
+      <div class="card-head">
+        <h3 id="robTitle">Robustness across specifications</h3>
+        <label>Term <select id="rsTerm"></select></label>
+      </div>
+      <div id="robust" class="chart tall" role="img" aria-label="Coefficient across specifications"></div>
+      <p class="chart-note">Quantile estimates (QR) pool within- and between-country variation and are not directly comparable in size with fixed-effects (FE) estimates.</p>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>Table view</h3>
+    <div class="table-wrap"><table class="data num" id="coefTable"></table></div>
+    <p class="chart-note" id="coefNote"></p>
+  </div>
+</section>
+
+<!-- ROBUSTNESS -->
+<section class="panel" id="tab-robust" role="tabpanel" hidden>
+  <p class="lede small">Two checks on the preferred model (two-way fixed effects, full controls, Driscoll–Kraay SEs). <strong>Leave-one-country-out</strong> re-estimates the model 40-plus times, dropping one country each time, to see whether any single country drives the result. <strong>Lagged infrastructure</strong> asks whether the association appears in the same year or builds over one to three years. Predictors are standardised once, on the full sample, so coefficients are comparable across runs.</p>
+  <div class="filters">
+    <label>Outcome <select id="rbOutcome"></select></label>
+    <label>Term <select id="rbTerm"></select></label>
+  </div>
+  <div class="chart-card">
+    <h3 id="looTitle">Leave-one-country-out</h3>
+    <div id="looSummary" class="badges"></div>
+    <div id="loo" class="chart xtall" role="img" aria-label="Coefficient when each country is omitted"></div>
+    <p class="chart-note">Each point is the estimate with the named country omitted, with its 95% interval. The solid line is the full-sample estimate and the shaded band its 95% interval. Filled markers: <em>p</em> &lt; 0.05.</p>
+  </div>
+  <div class="grid-2">
+    <div class="chart-card">
+      <h3 id="lagTitle">Infrastructure timing</h3>
+      <div id="lags" class="chart tall" role="img" aria-label="Infrastructure coefficient by lag"></div>
+      <p class="chart-note">Own sample: each model uses every observation available for that lag. Common sample: all five models use the same observations (INFRA at t to t−3, the outcome and all controls observed), so differences reflect timing rather than sample composition.</p>
+    </div>
+    <div class="chart-card">
+      <h3>Timing table</h3>
+      <div class="table-wrap"><table class="data num" id="lagTable"></table></div>
+      <p class="chart-note">*** p &lt; 0.01, ** p &lt; 0.05, * p &lt; 0.10. The interaction uses the lagged INFRA times current HCR.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULATOR -->
+<section class="panel" id="tab-simulate" role="tabpanel" hidden>
+  <p class="lede small">Translate the estimates into a scenario. Choose a country and change the levers; the simulator applies the estimated coefficients to that country's latest observed values and reports the implied change with a 95% interval. These are statistical associations, not causal forecasts.</p>
+  <div class="sim">
+    <div class="sim-controls chart-card">
+      <label>Country <select id="smCountry"></select></label>
+      <label>Outcome <select id="smOutcome"></select></label>
+      <label>Model <select id="smSpec"></select></label>
+      <div class="presets" role="group" aria-label="Scenario presets">
+        <span class="label">Presets</span>
+        <button type="button" data-preset="infra">Infrastructure +1 SD</button>
+        <button type="button" data-preset="green">Infrastructure +1 SD &amp; cleaner energy</button>
+        <button type="button" data-preset="skills">Human capital +1 SD</button>
+        <button type="button" data-preset="reset" class="ghost">Reset</button>
+      </div>
+      <div id="sliders"></div>
+      <fieldset class="disabled-block" disabled>
+        <legend>Governance levers (pending WGI merge)</legend>
+        <label>Regulatory quality <input type="range" disabled></label>
+        <label>Rule of law <input type="range" disabled></label>
+      </fieldset>
+    </div>
+    <div class="sim-output">
+      <div class="chart-card">
+        <div id="simHeadline" class="sim-headline" aria-live="polite"></div>
+        <div id="simBadges" class="badges"></div>
+      </div>
+      <div class="chart-card">
+        <h3>Contribution of each lever</h3>
+        <div id="simBars" class="chart" role="img" aria-label="Contribution of each lever to the predicted change"></div>
+        <p class="chart-note">Orange bars raise environmental pressure; blue bars lower it. Each bar applies one lever on its own, so bars need not sum exactly to the total.</p>
+      </div>
+      <div class="chart-card">
+        <h3 id="simTsTitle">Baseline and scenario</h3>
+        <div id="simTs" class="chart" role="img" aria-label="Observed series with scenario"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUALITY -->
+<section class="panel" id="tab-quality" role="tabpanel" hidden>
+  <p class="lede small">Every variable is screened for coverage, persistence and plausibility. Real macro indicators change slowly, so their year-to-year (lag-1) autocorrelation within a country is typically above 0.8. A value near zero indicates noise. The original workbook indices (rows marked "superseded") failed these checks and were rebuilt from their public sources.</p>
+  <div class="chart-card">
+    <h3>Variable diagnostics</h3>
+    <div class="table-wrap"><table class="data num" id="diagTable"></table></div>
+  </div>
+  <div class="chart-card">
+    <h3>How the indices are built</h3>
+    <div class="grid-2" id="idxCards"></div>
+    <p class="chart-note" id="idxNote"></p>
+  </div>
+  <div class="grid-2">
+    <div class="chart-card">
+      <h3>Original workbook HCR vs a uniform draw</h3>
+      <div id="hcrHist" class="chart" role="img" aria-label="Histogram of HCR values"></div>
+      <p class="chart-note" id="hcrNote"></p>
+    </div>
+    <div class="chart-card">
+      <div class="card-head">
+        <h3>Rebuilt vs original index</h3>
+        <label>Index <select id="qIndex"><option value="HCR">HCR</option><option value="INFRA">INFRA</option></select></label>
+        <label>Country <select id="qCountry"></select></label>
+      </div>
+      <div id="hcrTs" class="chart" role="img" aria-label="Rebuilt and original index time series"></div>
+      <p class="chart-note" id="qNote">Both series are standardised within the country so they share one axis.</p>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>Other known issues</h3>
+    <ul class="issues">
+      <li><strong>TFP (freshwater) is constant within every country</strong>, so it cannot be used in fixed-effects models. A time-varying indicator such as withdrawals or water stress is needed.</li>
+      <li><strong>Original INFRA and HCR superseded.</strong> The workbook's HCR was uniform noise, and its INFRA scaled with country size. Both indices have been rebuilt from per-capita and percentage indicators.</li>
+      <li><strong>Global Innovation Index and AfDB data not used.</strong> GII starts in 2007, is not comparable across editions and has no open time-series download. AfDB infrastructure data largely repeats WDI electricity and ICT series. R&amp;D spending and researcher counts (UNESCO UIS) have fewer than 200 observations across 49 countries, so they are reported but not included in HCR.</li>
+      <li><strong>Rebuilt indices start in 1990</strong>, because the source series (electricity access, internet, schooling) do not exist earlier for most countries. Models using INFRA and HCR therefore cover 1990 onwards.</li>
+      <li><strong>INST (institutional quality) is not yet merged.</strong> The governance module of the simulator is disabled until it is.</li>
+      <li><strong>Country names corrected</strong> in processing: Cabo Verbe → Cabo Verde, Eritea → Eritrea, Democratic Republich of the Congo → Congo, Dem. Rep., Ivory Coast → Côte d'Ivoire; sheet names "Benni" and "liberia" mapped to Benin and Liberia.</li>
+      <li><strong>Energy mix</strong> is the renewable share (Ghana falls from 100% in 1990 as thermal generation grows), so a higher value means a cleaner mix.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- METHODS -->
+<section class="panel" id="tab-methods" role="tabpanel" hidden>
+  <div class="grid-2">
+    <div class="chart-card prose">
+      <h3>Model</h3>
+      <p>An extended STIRPAT model with country and year fixed effects:</p>
+      <p class="eq">Y<sub>it</sub> = α<sub>i</sub> + λ<sub>t</sub> + β<sub>1</sub>INFRA<sub>it</sub> + β<sub>2</sub>HCR<sub>it</sub> + β<sub>3</sub>(INFRA×HCR)<sub>it</sub> + γ′X<sub>it</sub> + ε<sub>it</sub></p>
+      <ul>
+        <li>Outcomes: emissions (inverse hyperbolic sine), arable land (levels), resource rents (log 1 + x).</li>
+        <li>Predictors standardised over all available observations; GDP per capita and population logged first.</li>
+        <li>Driscoll–Kraay standard errors, two lags, robust to heteroskedasticity, autocorrelation and cross-sectional dependence.</li>
+        <li>Coverage checks: broad controls (drops energy mix and trade), and equal-country weights (1 / observations per country).</li>
+        <li>Quantile regressions at the 25th, 50th and 75th percentiles on the broad-control sample. A method-of-moments quantile model with fixed effects (Machado &amp; Santos Silva, 2019) is a planned extension.</li>
+        <li>Leave-one-country-out: the full-control model re-estimated once per omitted country, keeping the full-sample standardisation.</li>
+        <li>Lagged infrastructure: INFRA at t−1, t−2 and t−3 (calendar-year lags, so a missing year gives a missing lag) and the t−1 to t−3 mean. Each is estimated separately, on its own sample and on a common sample.</li>
+        <li>Index construction: principal-component weights in place of equal weights. The original workbook indices are also run for comparison.</li>
+      </ul>
+      <h3>Indices</h3>
+      <p><strong>INFRA</strong>: electricity access (WDI), mobile subscriptions, internet users and fixed telephone lines (ITU via WDI). <strong>HCR</strong>: mean and expected years of schooling (UNDP HDR), tertiary and secondary gross enrolment (UNESCO UIS via WDI). Each component is z-scored within year across the 49 countries, and the index is the mean of the available z-scores, with at least two required. Gaps inside a country's series of up to five years are interpolated linearly. Series are never extrapolated.</p>
+      <h3>Simulator</h3>
+      <p>For lever changes Δx (in standard-deviation units), the predicted change in the transformed outcome is Δŷ = β′Δx, including the change in the INFRA × HCR product. The 95% interval uses the model's variance–covariance matrix. Results are back-transformed to natural units at the country's latest observed value.</p>
+    </div>
+    <div class="chart-card prose">
+      <h3>Downloads</h3>
+      <ul class="downloads">
+        <li><a href="data/panel.csv" download>panel.csv</a>: the clean country-year panel (3,185 rows)</li>
+        <li><a href="data/results_long.csv" download>results_long.csv</a>: all coefficients, standard errors and <em>p</em>-values</li>
+        <li><a href="data/metadata.json" download>metadata.json</a>: variable definitions and sources</li>
+        <li><a href="data/results.json" download>results.json</a>: full model output, including covariance matrices and robustness runs</li>
+        <li><a href="data/index_components.csv" download>index_components.csv</a>: every INFRA and HCR component, country by year, after gap-filling</li>
+      </ul>
+      <h3>Code</h3>
+      <p>The pipeline (<code>analysis/fetch_sources.py</code> → <code>build_indices.py</code> → <code>build_panel.py</code> → <code>estimate.py</code>) downloads the source series and regenerates every file above. Source code: <a id="repoLink" href="#">GitHub repository</a>.</p>
+      <h3>Cite</h3>
+      <p class="cite">Moore, S. E., Adams, J., Maisuh, A., &amp; Tackie, G. (2026). <em>Paving an extractive path? Infrastructure, human capital and environmental pressure in Sub-Saharan Africa.</em> University of Cape Coast.</p>
+      <p class="muted-text">Supported by a Group-led Research Support Grant from the Directorate of Research, Innovation and Consultancy (DRIC), University of Cape Coast.</p>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="foot">University of Cape Coast · DRIC Research Support Grant · Data: World Bank WDI, ITU, UNESCO UIS, UNDP HDR</footer>
+</body>
+</html>

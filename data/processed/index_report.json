@@ -1,0 +1,120 @@
+{
+ "INFRA": {
+  "components": {
+   "elec": {
+    "label": "Access to electricity (% of population)",
+    "source": "World Bank WDI",
+    "code": "EG.ELC.ACCS.ZS",
+    "log": false,
+    "obs": 1420
+   },
+   "mobile": {
+    "label": "Mobile cellular subscriptions per 100",
+    "source": "ITU (via WDI)",
+    "code": "IT.CEL.SETS.P2",
+    "log": true,
+    "obs": 1674
+   },
+   "internet": {
+    "label": "Internet users (% of population)",
+    "source": "ITU (via WDI)",
+    "code": "IT.NET.USER.ZS",
+    "log": true,
+    "obs": 1561
+   },
+   "fixedtel": {
+    "label": "Fixed telephone subscriptions per 100",
+    "source": "ITU (via WDI)",
+    "code": "IT.MLT.MAIN.P2",
+    "log": true,
+    "obs": 1667
+   }
+  },
+  "pc_loadings": {
+   "elec": 0.507,
+   "mobile": 0.468,
+   "internet": 0.518,
+   "fixedtel": 0.506
+  },
+  "pc_share": 0.783,
+  "corr_equal_pc": 1.0,
+  "obs": 1689,
+  "years": [
+   1990,
+   2024
+  ]
+ },
+ "HCR": {
+  "components": {
+   "mys": {
+    "label": "Mean years of schooling (adults 25+)",
+    "source": "UNDP HDR",
+    "code": "hdr:mys",
+    "log": false,
+    "obs": 1488
+   },
+   "eys": {
+    "label": "Expected years of schooling",
+    "source": "UNDP HDR",
+    "code": "hdr:eys",
+    "log": false,
+    "obs": 1540
+   },
+   "tertiary": {
+    "label": "Tertiary enrolment (% gross)",
+    "source": "UNESCO UIS (via WDI)",
+    "code": "SE.TER.ENRR",
+    "log": true,
+    "obs": 1066
+   },
+   "secondary": {
+    "label": "Secondary enrolment (% gross)",
+    "source": "UNESCO UIS (via WDI)",
+    "code": "SE.SEC.ENRR",
+    "log": false,
+    "obs": 1117
+   }
+  },
+  "pc_loadings": {
+   "mys": 0.506,
+   "eys": 0.509,
+   "tertiary": 0.45,
+   "secondary": 0.532
+  },
+  "pc_share": 0.792,
+  "corr_equal_pc": 1.0,
+  "obs": 1545,
+  "years": [
+   1990,
+   2023
+  ]
+ },
+ "excluded": {
+  "rd": {
+   "label": "R&D expenditure (% of GDP)",
+   "source": "UNESCO UIS (via WDI)",
+   "code": "GB.XPD.RSDV.GD.ZS",
+   "obs": 186
+  },
+  "researchers": {
+   "label": "Researchers per million",
+   "source": "UNESCO UIS (via WDI)",
+   "code": "SP.POP.SCIE.RD.P6",
+   "obs": 159
+  },
+  "broadband": {
+   "label": "Fixed broadband subscriptions per 100",
+   "source": "ITU (via WDI)",
+   "code": "IT.NET.BBND.P2",
+   "obs": 893
+  }
+ },
+ "rules": {
+  "max_gap": 5,
+  "min_components": 2,
+  "years": [
+   1990,
+   2024
+  ]
+ }
+}

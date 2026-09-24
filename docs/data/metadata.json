@@ -1,0 +1,249 @@
+[
+ {
+  "key": "TFP",
+  "name": "TFP",
+  "role": "Dependent",
+  "description": "Freshwater production/availability",
+  "sources": [
+   "FAO AQUASTAT",
+   "World Bank WDI",
+   "UNEP"
+  ],
+  "links": [
+   "https://www.fao.org/aquastat",
+   "https://data.worldbank.org",
+   "https://geodata.grid.unep.ch"
+  ],
+  "unit": "Freshwater availability (source units)",
+  "transformation": "log",
+  "caveat": "Time-invariant within countries in this dataset"
+ },
+ {
+  "key": "THE",
+  "name": "THE",
+  "role": "Dependent",
+  "description": "Total greenhouse gas emissions (CO₂e)",
+  "sources": [
+   "UNFCCC",
+   "World Bank WDI",
+   "Climate Watch (WRI)",
+   "Our World in Data"
+  ],
+  "links": [
+   "https://unfccc.int/ghg-inventories",
+   "https://data.worldbank.org",
+   "https://www.climatewatchdata.org",
+   "https://ourworldindata.org"
+  ],
+  "unit": "Mt CO2e (net, incl. land use)",
+  "transformation": "inverse hyperbolic sine",
+  "caveat": ""
+ },
+ {
+  "key": "AL",
+  "name": "AL",
+  "role": "Dependent",
+  "description": "Arable land (% of total land area)",
+  "sources": [
+   "World Bank WDI",
+   "FAOSTAT",
+   "UN SDG Database"
+  ],
+  "links": [
+   "https://data.worldbank.org",
+   "https://www.fao.org/faostat",
+   "https://unstats.un.org/sdgs"
+  ],
+  "unit": "% of land area",
+  "transformation": "levels",
+  "caveat": ""
+ },
+ {
+  "key": "TNRR",
+  "name": "TNRR",
+  "role": "Dependent",
+  "description": "Natural resource rents (% of GDP)",
+  "sources": [
+   "World Bank WDI",
+   "IMF Natural Resource Database",
+   "EITI-Ghana"
+  ],
+  "links": [
+   "https://data.worldbank.org",
+   "https://www.imf.org",
+   "https://eiti.org/ghana"
+  ],
+  "unit": "% of GDP",
+  "transformation": "log(1 + x)",
+  "caveat": ""
+ },
+ {
+  "key": "INFRA",
+  "name": "INFRA",
+  "role": "Independent",
+  "description": "Infrastructure index: mean of within-year z-scores of electricity access, mobile subscriptions, internet use and fixed telephone lines",
+  "sources": [
+   "World Bank WDI",
+   "ITU ICT Indicators (via WDI)"
+  ],
+  "links": [
+   "https://data.worldbank.org",
+   "https://www.itu.int/en/ITU-D/Statistics"
+  ],
+  "unit": "Index (mean of within-year z-scores)",
+  "transformation": "standardised",
+  "caveat": "Rebuilt from public sources; 1990–2024"
+ },
+ {
+  "key": "HCR",
+  "name": "HCR",
+  "role": "Independent",
+  "description": "Human capital index: mean of within-year z-scores of mean and expected years of schooling, tertiary enrolment and secondary enrolment",
+  "sources": [
+   "UNDP Human Development Reports",
+   "UNESCO UIS (via WDI)"
+  ],
+  "links": [
+   "https://hdr.undp.org/data-center",
+   "https://uis.unesco.org"
+  ],
+  "unit": "Index (mean of within-year z-scores)",
+  "transformation": "standardised",
+  "caveat": "Rebuilt from public sources; 1990–2023"
+ },
+ {
+  "key": "GDPPC",
+  "name": "GDP per capita",
+  "role": "Control",
+  "description": "Income level (constant 2015 USD)",
+  "sources": [
+   "World Bank WDI",
+   "Penn World Tables"
+  ],
+  "links": [
+   "https://data.worldbank.org",
+   "https://www.rug.nl/ggdc/productivity/pwt"
+  ],
+  "unit": "Constant 2015 US$",
+  "transformation": "log, standardised",
+  "caveat": ""
+ },
+ {
+  "key": "POP",
+  "name": "Population",
+  "role": "Control",
+  "description": "Population size",
+  "sources": [
+   "World Bank WDI",
+   "UN Population Division"
+  ],
+  "links": [
+   "https://data.worldbank.org",
+   "https://population.un.org"
+  ],
+  "unit": "Persons",
+  "transformation": "log, standardised",
+  "caveat": ""
+ },
+ {
+  "key": "URB",
+  "name": "Urbanisation",
+  "role": "Control",
+  "description": "Urban population (% of total)",
+  "sources": [
+   "World Bank WDI",
+   "UN Population Division",
+   "UN-Habitat"
+  ],
+  "links": [
+   "https://data.worldbank.org",
+   "https://population.un.org",
+   "https://unhabitat.org"
+  ],
+  "unit": "% of population",
+  "transformation": "standardised",
+  "caveat": ""
+ },
+ {
+  "key": "ENERGY",
+  "name": "Energy Mix",
+  "role": "Control",
+  "description": "Renewables share, fossil share (%)",
+  "sources": [
+   "IRENA",
+   "IEA Open Data",
+   "World Bank WDI",
+   "BP Statistical Review"
+  ],
+  "links": [
+   "https://irena.org",
+   "https://www.iea.org/data-and-statistics",
+   "https://data.worldbank.org",
+   "https://www.bp.com"
+  ],
+  "unit": "Renewable share (%)",
+  "transformation": "standardised",
+  "caveat": ""
+ },
+ {
+  "key": "TRADE",
+  "name": "Trade Openness",
+  "role": "Control",
+  "description": "Trade as % of GDP, terms of trade",
+  "sources": [
+   "World Bank WDI",
+   "UNCTADstat",
+   "WTO Data Portal"
+  ],
+  "links": [
+   "https://data.worldbank.org",
+   "https://unctadstat.unctad.org",
+   "https://data.wto.org"
+  ],
+  "unit": "% of GDP",
+  "transformation": "standardised",
+  "caveat": ""
+ },
+ {
+  "key": "INFRA_ORIG",
+  "name": "INFRA_ORIG",
+  "role": "Superseded",
+  "description": "Infrastructure index as supplied in the original workbook (superseded)",
+  "sources": [
+   "Datasets complete.xlsx (construction undocumented)"
+  ],
+  "links": [],
+  "unit": "Index (source units)",
+  "transformation": "comparison only",
+  "caveat": "Fails plausibility checks and is not used in the models. See Data quality."
+ },
+ {
+  "key": "HCR_ORIG",
+  "name": "HCR_ORIG",
+  "role": "Superseded",
+  "description": "Human capital index as supplied in the original workbook (superseded)",
+  "sources": [
+   "Datasets complete.xlsx (construction undocumented)"
+  ],
+  "links": [],
+  "unit": "Index (21–79)",
+  "transformation": "comparison only",
+  "caveat": "Fails plausibility checks and is not used in the models. See Data quality."
+ },
+ {
+  "key": "INST",
+  "name": "INST",
+  "role": "Moderator",
+  "description": "Institutional quality: mean of standardised WGI regulatory quality, government effectiveness, rule of law and control of corruption",
+  "sources": [
+   "World Bank Worldwide Governance Indicators"
+  ],
+  "links": [
+   "https://www.worldbank.org/en/publication/worldwide-governance-indicators"
+  ],
+  "unit": "Index",
+  "transformation": "standardised",
+  "caveat": "Not yet merged into the panel",
+  "pending": true
+ }
+]
