@@ -2,7 +2,7 @@
    Reads the JSON files written by analysis/build_panel.py and analysis/estimate.py. */
 'use strict';
 
-const REPO_URL = '#'; // set to the GitHub repository URL once it is published
+const REPO_URL = 'https://github.com/moorekwesi/SSA-Environmental-Accounting';
 
 const S = { panel: null, meta: null, res: null, diag: null, rendered: new Set(), current: 'overview' };
 const $ = (id) => document.getElementById(id);

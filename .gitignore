@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+~$*
+.~lock.*
+.DS_Store
